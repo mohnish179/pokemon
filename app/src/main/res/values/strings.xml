@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Pokedex</string>
+    <string name="Pokedex">Pokedex</string>
+    <string name="item_dex">Item Dex</string>
+    <string name="type_dex">Type Dex</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="region_dex">Region Dex</string>
+    <string name="about">About</string>
+</resources>

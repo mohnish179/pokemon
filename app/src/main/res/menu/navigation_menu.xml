@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/nav_pokedex"
+        android:title="@string/Pokedex"/>
+    <item android:id="@+id/nav_items"
+        android:title="@string/item_dex"/>
+    <item android:id="@+id/nav_types"
+        android:title="@string/type_dex"/>
+    <item android:id="@+id/nav_regions"
+        android:title="@string/region_dex"/>
+    <item android:id="@+id/nav_location"
+        android:title="Location Dex"/>
+
+</menu>
