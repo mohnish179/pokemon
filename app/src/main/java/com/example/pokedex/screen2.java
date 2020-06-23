@@ -174,9 +174,21 @@ public class screen2 extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Pokemon3 pokemonAns=response.body();
                     assert pokemonAns != null;
-                    about=pokemonAns.getFlavor_text_entries().get(0).getFlavor_text();
-                    tv9.setText(about);
-
+                    if(pokemonAns.getFlavor_text_entries().get(5).getLanguage().getName().equals("en")) {
+                        about = pokemonAns.getFlavor_text_entries().get(5).getFlavor_text();
+                        Log.d(TAG, "onResponse: accessing  1st");
+                        tv9.setText(about);
+                    }
+                    else if(pokemonAns.getFlavor_text_entries().get(6).getLanguage().getName().equals("en"))
+                    {
+                        about = pokemonAns.getFlavor_text_entries().get(6).getFlavor_text();
+                        tv9.setText(about);
+                    }
+                    else if(pokemonAns.getFlavor_text_entries().get(7).getLanguage().getName().equals("en"))
+                    {
+                        about = pokemonAns.getFlavor_text_entries().get(7).getFlavor_text();
+                        tv9.setText(about);
+                    }
 
                 }
             }
