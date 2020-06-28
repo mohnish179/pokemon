@@ -1,10 +1,18 @@
 package com.example.pokedex;
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -40,10 +48,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int offset;
     private DrawerLayout mdrawerlayout;
     private ActionBarDrawerToggle mtoggle;
+    private ProgressBar p;
 
-
+int load;
     private boolean a1;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,10 +111,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         get_info(offset);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void get_info(int offset) {
         pokeapiservice service = retrofit.create(pokeapiservice.class);
 
         Call<PokemonAns> pokemonAnsCall = service.obtain_list_Pokemon("pokemon", 20,offset);
+
+
+        p=findViewById(R.id.progressBar);
+
+        p.setIndeterminate(true);
+
 
         pokemonAnsCall.enqueue(new Callback<PokemonAns>() {
             @Override
@@ -118,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
                     pokemonAdapter.addPokemon(list_Pokemon);
+                    p.setVisibility(View.GONE);
                     Log.d(TAG, "onResponse:");
 
                 } else {
@@ -131,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.e(TAG, " onFailure: " + t.getMessage());
             }
         });
+
     }
 
     @Override

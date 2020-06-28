@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -45,6 +47,7 @@ public class specific_type_screen extends AppCompatActivity implements Navigatio
     private DrawerLayout mdrawerlayout;
     private ActionBarDrawerToggle mtoggle;
 int recieve_type;
+private ProgressBar p;
 int length;
 
     private boolean a1;
@@ -116,7 +119,9 @@ int length;
         pokeapiservice_get_type_pokemon service = retrofit.create(pokeapiservice_get_type_pokemon.class);
 
         Call<Pokemon_get_pokemon_for_type> pokemonAnsCall = service.obtain_list_Pokemon(recieve_type ,20,offset);
+        p=findViewById(R.id.progressBar);
 
+        p.setIndeterminate(true);
         pokemonAnsCall.enqueue(new Callback<Pokemon_get_pokemon_for_type>() {
             @Override
             public void onResponse(Call<Pokemon_get_pokemon_for_type> call, Response<Pokemon_get_pokemon_for_type> response) {
@@ -134,6 +139,7 @@ int length;
                     }
 
                     pokemonAdapter2.addPokemon(list_Pokemon);
+                    p.setVisibility(View.GONE);
                     Log.d(TAG, "onResponse:");
 
                 } else {

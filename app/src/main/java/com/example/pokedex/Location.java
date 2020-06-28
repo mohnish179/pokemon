@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -39,7 +41,7 @@ public class Location extends AppCompatActivity implements NavigationView.OnNavi
     private int offset;
     private DrawerLayout mdrawerlayout;
     private ActionBarDrawerToggle mtoggle;
-
+private ProgressBar p;
 
     private boolean a1;
 
@@ -104,7 +106,9 @@ public class Location extends AppCompatActivity implements NavigationView.OnNavi
         pokeapiservice service = retrofit.create(pokeapiservice.class);
 
         Call<PokemonAns> pokemonAnsCall = service.obtain_list_Pokemon("location",20,offset);
+        p=findViewById(R.id.progressBar);
 
+        p.setIndeterminate(true);
         pokemonAnsCall.enqueue(new Callback<PokemonAns>() {
             @Override
             public void onResponse(Call<PokemonAns> call, Response<PokemonAns> response) {
@@ -117,6 +121,7 @@ public class Location extends AppCompatActivity implements NavigationView.OnNavi
 
 
                     pokemonAdapter.addPokemon(list_Pokemon);
+                    p.setVisibility(View.GONE);
                     Log.d(TAG, "onResponse:");
 
                 } else {

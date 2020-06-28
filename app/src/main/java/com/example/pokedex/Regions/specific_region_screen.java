@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -46,6 +48,7 @@ public class specific_region_screen extends AppCompatActivity implements Navigat
     private DrawerLayout mdrawerlayout;
     private ActionBarDrawerToggle mtoggle;
     int recieve_region;
+    private ProgressBar p;
     int length;
 
     private boolean a1;
@@ -118,6 +121,10 @@ public class specific_region_screen extends AppCompatActivity implements Navigat
 
         Call<Pokemon_get_pokemon_for_generation> pokemonAnsCall = service.obtain_list_Pokemon(recieve_region,20,offset);
 
+        p=findViewById(R.id.progressBar);
+
+        p.setIndeterminate(true);
+
         pokemonAnsCall.enqueue(new Callback<Pokemon_get_pokemon_for_generation>() {
             @Override
             public void onResponse(Call<Pokemon_get_pokemon_for_generation> call, Response<Pokemon_get_pokemon_for_generation> response) {
@@ -135,6 +142,7 @@ public class specific_region_screen extends AppCompatActivity implements Navigat
                     }
 
                     pokemonAdapter2.addPokemon(list_Pokemon);
+                    p.setVisibility(View.GONE);
                     Log.d(TAG, "onResponse:");
 
                 } else {
