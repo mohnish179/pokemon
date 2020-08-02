@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,11 +24,13 @@ import com.example.pokedex.screen2;
 import com.example.pokedex.typee.specific_type_screen;
 import com.google.gson.Gson;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> {
+public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> implements Filterable {
 
     private ArrayList<Pokemon> dataset;
+    private ArrayList<Pokemon> datasetfull;
     private Context context;
     String replace;
 
@@ -36,6 +40,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     public PokemonAdapter(Context context) {
         this.context = context;
         dataset = new ArrayList<>();
+
     }
 
     @Override
@@ -137,6 +142,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
 
     public void addPokemon(ArrayList<Pokemon> listaPokemon) {
         dataset.addAll(listaPokemon);
+        datasetfull=new ArrayList<>(dataset);
         notifyDataSetChanged();
     }
 
@@ -155,5 +161,46 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             parentlayout=itemView.findViewById(R.id.parentlayout);
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return exampleFilter;
+    }
+    private Filter exampleFilter=new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<Pokemon> filteredlist=new ArrayList<>();
+
+            if(constraint==null||constraint.length()==0)
+            {
+                filteredlist.addAll(datasetfull);
+
+            }
+            else
+            {
+                String filterpattern=constraint.toString().toLowerCase().trim();
+                for(Pokemon item:datasetfull)
+                {
+                    if(item.getName().toLowerCase().contains(filterpattern))
+                    {
+                        filteredlist.add(item);
+                    }
+                }
+            }
+            FilterResults results=new FilterResults();
+            results.values=filteredlist;
+
+            return results;
+
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            dataset.clear();
+            dataset.addAll((ArrayList)results.values);
+            notifyDataSetChanged();
+
+        }
+    };
 }
 

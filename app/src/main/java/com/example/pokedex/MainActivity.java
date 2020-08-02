@@ -5,11 +5,17 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -27,6 +33,8 @@ import com.example.pokedex.PokeApiService.pokeapiservice;
 import com.example.pokedex.Regions.Region_screen;
 import com.example.pokedex.typee.type_screen;
 import com.google.android.material.navigation.NavigationView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -48,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int offset;
     private DrawerLayout mdrawerlayout;
     private ActionBarDrawerToggle mtoggle;
+
     private ProgressBar p;
 
 int load;
@@ -78,6 +87,11 @@ int load;
         recyclerView.setHasFixedSize(true);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+
+
+
+
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -109,13 +123,18 @@ int load;
         a1 = true;
         offset = 0;
         get_info(offset);
+
+
+
     }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void get_info(int offset) {
         pokeapiservice service = retrofit.create(pokeapiservice.class);
 
-        Call<PokemonAns> pokemonAnsCall = service.obtain_list_Pokemon("pokemon", 20,offset);
+        Call<PokemonAns> pokemonAnsCall = service.obtain_list_Pokemon("pokemon", 700,offset);
 
 
         p=findViewById(R.id.progressBar);
@@ -153,6 +172,32 @@ int load;
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.search_menu,menu);
+        MenuItem searchitem= menu.findItem(R.id.action_search);
+        SearchView searchView=(SearchView) searchitem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                pokemonAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if(mtoggle.onOptionsItemSelected(item))
@@ -161,7 +206,9 @@ int load;
         }
 
 
+
         return super.onOptionsItemSelected(item);
+
     }
 
     @Override
