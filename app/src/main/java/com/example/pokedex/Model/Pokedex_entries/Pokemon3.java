@@ -10,7 +10,24 @@ public class Pokemon3 {
     @SerializedName("flavor_text_entries")
         @Expose
     ArrayList<pokemon_flavour_texts> flavor_text_entries;
-@SerializedName("base_happiness")
+
+Generation generation;
+Evolution_chain evolution_chain;
+int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public Evolution_chain getEvolution_chain() {
+        return evolution_chain;
+    }
+
+    public Generation getGeneration() {
+        return generation;
+    }
+
+    @SerializedName("base_happiness")
         @Expose
     int base_happiness;
 

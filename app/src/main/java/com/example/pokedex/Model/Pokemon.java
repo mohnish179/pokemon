@@ -10,6 +10,11 @@ public class Pokemon {
         String[] urlparts=url.split("/");
         return Integer.parseInt(urlparts[urlparts.length-1]);
     }
+    public String getNumber_string()
+    {
+        String[] urlparts=url.split("/");
+        return urlparts[urlparts.length-1];
+    }
 
     public String getName() {
         return name;

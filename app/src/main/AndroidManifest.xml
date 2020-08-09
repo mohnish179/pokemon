@@ -18,11 +18,12 @@
         </activity>
         <activity android:name=".screen2"/>
         <activity android:name=".items"/>
-      <activity android:name=".typee.type_screen"/>
+        <activity android:name=".typee.type_screen"/>
         <activity android:name=".typee.specific_type_screen"/>
         <activity android:name=".Regions.Region_screen"/>
         <activity android:name=".Regions.specific_region_screen"/>
         <activity android:name=".Location"/>
+        <activity android:name=".Main_page"/>
     </application>
 
 

@@ -10,6 +10,7 @@ public class Pokemon2 {
     int weight;
     ArrayList<Types> types;
     int id;
+    ArrayList<Stats> stats;
 
 
     public Pokemon2(int height, int weight, ArrayList<Types> types) {
@@ -19,6 +20,9 @@ public class Pokemon2 {
         this.id=id;
     }
 
+    public ArrayList<Stats> getStats() {
+        return stats;
+    }
 
     public int getHeight() {
         return height;

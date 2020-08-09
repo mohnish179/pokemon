@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,10 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     private ArrayList<Pokemon> dataset;
     private ArrayList<Pokemon> datasetfull;
     private Context context;
-    String replace;
 
+    String replace;
+    String converted_id;
+    private static final String TAG = "PokemonAdapter";
     public static String posn="com.example.pokedexsample2.adapter.PokemonAdapter.dataset";
 
 
@@ -62,6 +65,8 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         editor.putString("dataset",json);
         editor.apply();
         holder.TextViewTitle.setText(pokemon1.getName());
+        converted_id=String.valueOf(pokemon1.getNumber());
+        holder.TextViewId.setText("ID:"+converted_id);
 
 
         //getting image
@@ -87,12 +92,14 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         {
             holder.imageView.setVisibility(View.INVISIBLE);
             holder.TextViewTitle.setTextSize(30);
+            holder.TextViewId.setVisibility(View.INVISIBLE);
             holder.parentlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(context, specific_type_screen.class);
                     intent.putExtra("type_sent",position);
                     context.startActivity(intent);
+
 
                 }
             });
@@ -101,6 +108,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         {
             holder.imageView.setVisibility(View.INVISIBLE);
             holder.TextViewTitle.setTextSize(30);
+            holder.TextViewId.setVisibility(View.INVISIBLE);
             holder.parentlayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -150,6 +158,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
 
         private ImageView imageView;
         private TextView TextViewTitle;
+        private TextView TextViewId;
         LinearLayout parentlayout;
 
 
@@ -158,6 +167,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
 
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             TextViewTitle = (TextView) itemView.findViewById(R.id.TextViewTitle);
+            TextViewId=(TextView) itemView.findViewById(R.id.id);
             parentlayout=itemView.findViewById(R.id.parentlayout);
         }
     }
@@ -181,7 +191,12 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
                 String filterpattern=constraint.toString().toLowerCase().trim();
                 for(Pokemon item:datasetfull)
                 {
+                    Log.d(TAG, "performFiltering: "+converted_id);
                     if(item.getName().toLowerCase().contains(filterpattern))
+                    {
+                        filteredlist.add(item);
+                    }
+                    else if(item.getNumber_string().contains(filterpattern))
                     {
                         filteredlist.add(item);
                     }

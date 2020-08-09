@@ -3,9 +3,12 @@ package com.example.pokedex;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -106,7 +109,7 @@ protected void onCreate(Bundle savedInstanceState) {
         private void get_info(int offset) {
         pokeapiservice service = retrofit.create(pokeapiservice.class);
 
-        Call<PokemonAns> pokemonAnsCall = service.obtain_list_Pokemon("item",20,offset);
+        Call<PokemonAns> pokemonAnsCall = service.obtain_list_Pokemon("item",300,offset);
 p=findViewById(R.id.progressBar);
 p.setIndeterminate(true);
         pokemonAnsCall.enqueue(new Callback<PokemonAns>() {
@@ -137,6 +140,31 @@ p.setIndeterminate(true);
         });
         }
 
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+
+                MenuInflater inflater=getMenuInflater();
+                inflater.inflate(R.menu.search_menu,menu);
+                MenuItem searchitem= menu.findItem(R.id.action_search);
+                SearchView searchView=(SearchView) searchitem.getActionView();
+
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                                return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+
+                                pokemonAdapter.getFilter().filter(newText);
+                                return false;
+                        }
+                });
+
+
+                return true;
+        }
         @Override
         public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
